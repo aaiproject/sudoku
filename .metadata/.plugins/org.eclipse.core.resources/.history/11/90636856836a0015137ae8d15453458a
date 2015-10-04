@@ -1,0 +1,210 @@
+import java.awt.*;        
+import java.awt.event.*;  
+
+import javax.swing.*;     
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+ 
+
+public class Sudoku extends JFrame {
+
+   int n = 9;    
+   int SubSize = n/3; 
+ 
+   int CellSize = 60;   
+   int Width  = CellSize * n;
+   int Height = CellSize * n;
+ 
+   Color TextColour = Color.BLACK;
+   Font font = new Font("Monospaced", Font.BOLD, 20);
+ 
+   private JTextField[][] board = new JTextField[n][n];
+
+   private int[][] puzzle =
+	   	   {{0, 6, 0, 1, 0, 4, 0, 5, 0},
+            {0, 0, 8, 3, 0, 5, 6, 0, 0},
+            {2, 0, 0, 0, 0, 0, 0, 0, 1},
+            {8, 0, 0, 4, 0, 7, 0, 0, 6},
+            {0, 0, 6, 0, 0, 0, 3, 0, 0},
+            {7, 0, 0, 9, 0, 1, 0, 0, 4},
+            {5, 0, 0, 0, 0, 0, 0, 0, 2},
+            {0, 0, 7, 2, 0, 6, 9, 0, 0},
+            {0, 4, 0, 5, 0, 8, 0, 7, 0}};
+ 
+
+   public Sudoku(boolean check, JFrame Mainframe) {
+	 
+      Container cp = getContentPane();
+      cp.setLayout(new GridLayout(SubSize, SubSize));  
+     
+      JPanel panel0 = new JPanel();
+      JPanel panel1 = new JPanel();
+      JPanel panel2 = new JPanel();
+      JPanel panel3 = new JPanel();
+      JPanel panel4 = new JPanel();
+      JPanel panel5 = new JPanel();
+      JPanel panel6 = new JPanel();
+      JPanel panel7 = new JPanel();
+      JPanel panel8 = new JPanel();
+      
+      int StartI,StartJ;
+   
+      JPanel[] panel = {panel0,panel1,panel2,panel3,panel4,panel5,panel6,panel7,panel8};
+      for(int k=0;k<n;k++){
+    	  
+    	  cp.add(panel[k]);
+    	  panel[k].setLayout(new GridLayout(SubSize,SubSize));
+    	  panel[k].setBorder(BorderFactory.createLineBorder(Color.BLACK,2));
+    	  
+    	  //Check Current SubGrid
+    	  if(k == 0 || k == 1 || k ==2){
+    		  StartI =0;
+    	  }
+    	  else if(k == 3 || k == 4 || k ==5){
+    		  StartI =3;
+    	  }
+    	  else{
+    		  StartI =6;
+    	  }
+    	  
+    	  //Check Current SubGrid
+    	  if(k == 0 || k == 3 || k ==6){
+    		  StartJ =0;
+    	  }
+    	  else if(k == 1 || k == 4 || k ==7){
+    		  StartJ =3;
+    	  }
+    	  else{
+    		  StartJ =6;
+    	  }
+    	  
+    	  for (int i = 0; i < SubSize; i++) {
+    		  int temp =StartJ;
+    		  for (int j = 0; j < SubSize; j++) {
+    			  board[i][j] = new JTextField();
+    			  
+    			  panel[k].add(board[i][j]); 
+    			  if (check == false){
+    				  board[i][j].setText("");    
+    				  board[i][j].setEditable(true);
+    				  board[i][j].setBackground(Color.CYAN);
+    			  }
+    			  else if (puzzle[StartI][StartJ] == 0) {
+    				  board[i][j].setText("");    
+    				  board[i][j].setEditable(false);
+    				  board[i][j].setBackground(Color.CYAN);
+    			  } else {
+    				  board[i][j].setText(puzzle[StartI][StartJ] + "");
+    				  board[i][j].setEditable(false);
+    				  board[i][j].setForeground(TextColour);
+    				  board[i][j].setBackground(Color.CYAN);
+    			  }
+    			  board[i][j].setHorizontalAlignment(JTextField.CENTER);
+    			  board[i][j].setFont(font);
+    			  
+    			  StartJ++;
+    		 }
+    		 StartJ = temp;
+    		 StartI++;
+    	  }
+      }
+    
+      cp.setPreferredSize(new Dimension(Width, Height));
+
+      ((JComponent)cp).setBorder(BorderFactory.createMatteBorder(2,2, 2, 2,Color.BLACK));
+      pack();
+      
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
+      setTitle("Sudoku");
+
+
+      JMenuBar menuBar = new JMenuBar();
+      Font f = new Font("sans-serif", Font.PLAIN, 20);
+      UIManager.put("Menu.font", f);
+
+      
+      JMenu NewMenu = new JMenu("New Puzzle");
+      //NewMenu.setMnemonic(KeyEvent.VK_F);
+      menuBar.add(NewMenu);
+
+      JMenu SolveMenu = new JMenu("Solve");
+      menuBar.add(SolveMenu);
+           
+      
+      JMenu MainMenu = new JMenu("Return to Main Menu");
+      menuBar.add(MainMenu);
+      
+      MainMenu.addMenuListener(new MenuListener() {
+		
+		@Override
+		public void menuSelected(MenuEvent e) {
+			// TODO Auto-generated method stub
+			 Mainframe.setVisible(true);
+			 dispose();
+		}
+		
+		@Override
+		public void menuDeselected(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+		@Override
+		public void menuCanceled(MenuEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+      });
+      
+	  
+      setJMenuBar(menuBar);
+      setVisible(true);
+      Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+      this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+   }
+
+   public static void main(String[] args) {
+	   Import_Table tbl = new Import_Table("Table1");
+	   
+	   JFrame Startframe = new JFrame();
+	   Startframe.setSize(600, 400);
+	   Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+	   Startframe.setLocation(dim.width/2-Startframe.getSize().width/2, dim.height/2-Startframe.getSize().height/2);
+	   
+	   JButton btnInput = new JButton("Manually insert sudoku grid");
+	   JButton btnRandom = new JButton("Random generated sudoku grid");
+	   JLabel lblSudoku = new JLabel("Sudoku");
+	  
+	   btnInput.setBounds(190, 140, 230,50 );
+	   btnRandom.setBounds(190, 220, 230,50);
+	   lblSudoku.setBounds(230, 50, 200,50 );
+	   lblSudoku.setFont(new Font("Serif", Font.BOLD, 40));
+	   
+	   btnRandom.addActionListener(new ActionListener() {
+		
+			public void actionPerformed(ActionEvent e) {
+				JFrame frameRandom = new Sudoku(true,Startframe);
+			    frameRandom.setSize(800, 800);
+			    Startframe.setVisible(false);
+			}
+	   });
+	   
+	   btnInput.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				JFrame frameInput = new Sudoku(false,Startframe);
+			    frameInput.setSize(800, 800);
+			    Startframe.setVisible(false);
+			}
+	   });
+	   
+	   Startframe.setLayout(null);
+	   Startframe.getContentPane().add(btnInput);
+	   Startframe.getContentPane().add(btnRandom);
+	   Startframe.getContentPane().add(lblSudoku);
+	   Startframe.setVisible(true);
+	   
+       
+   }
+   
+}

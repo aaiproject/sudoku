@@ -1,0 +1,41 @@
+import java.io.File;
+import java.sql.*;
+
+/**
+ * Creates a connection with the database using an external class called org.sqlite.JDBC
+ * 
+ */
+public class Sudoku_Database {
+	//creates a connection instance
+	static Connection connect = null;
+	
+	public static Connection usersDB(){
+		try{
+			//the class "org.sqlite.JDBC" is dynamically loaded at runtime
+			Class.forName("org.sqlite.JDBC");
+			
+			//if the database does not exist, a new one is created with all the tables and fields
+			if(!new File("src\\Database.sqlite").exists()){
+				connect = DriverManager.getConnection("jdbc:sqlite:src\\Database.sqlite");
+				//String userTableQuery = "create table \"User\" (\n`User_ID` INTERGER PRIMARY KEY,\n`Username` varchar(50),\n`Password` varchar(50),\n`Identification_key` INTEGER,\n`Log_Details` TEXT\n)";
+				//String personTableQuery = "create table \"Person\" (\n`Person_ID` INTEGER PRIMARY KEY,\n`Person_Name` TEXT,\n`Mother_ID` INTEGER,\n`Father_ID` INTEGER,\n`Genome` TEXT,\n`Reference` TEXT\n)";
+				Statement state = connect.createStatement();
+				//state.execute(userTableQuery);
+				//state.execute(personTableQuery);
+				state.close();
+			}
+			//else connect to the one that exists
+			else{
+				connect = DriverManager.getConnection("jdbc:sqlite:src\\Database.sqlite");
+			}
+			return connect;
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+
+}

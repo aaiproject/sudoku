@@ -1,0 +1,56 @@
+import java.awt.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+public class Import_Table {
+	private String Tablename;
+	private int[][] table;
+	
+	public Import_Table(String TableName) {
+		this.Tablename = TableName;
+		Connection conn = Sudoku_Database.tableDB();
+		String query = "select * from "+Tablename;
+		PreparedStatement pst;
+		try {
+			pst = conn.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			//Current_ID = rs.getString(0);
+			int nCol = rs.getMetaData().getColumnCount();
+			int rows = rs.getRow();
+			int[][] table = new int[rows][nCol];
+			int  i=0;
+			while( (rs.next())&&(i<rows)) {
+				
+			    int[] row = new int[nCol];
+			    for( int iCol = 1; iCol <= nCol; iCol++ ){
+			        row[iCol-1] = Integer.parseInt(rs.getObject( iCol ).toString());
+			    }
+			    table[i]= row ;
+			    i++;
+			}
+			this.table = table;
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+
+	}
+	public int[][] getTable(){
+		return this.table;
+	}
+	public void DisplayTable(){
+		for(int i =0; i<table[1].length; i++){
+			for (int j=0 ; j<table[1].length; j++){
+				System.out.print(table[i][j] + " ");
+			}
+			System.out.println("");
+		}
+	}
+}

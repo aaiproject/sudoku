@@ -1,0 +1,19 @@
+
+import java.sql.*;
+
+public class Sudoku_Database
+{
+
+    public void Create_Database(){
+        File dbFile = new File(DB_NAME);
+        dbFile.delete();
+        SqlJetDb db = SqlJetDb.open(dbFile, true);
+        db.getOptions().setAutovacuum(true);
+        db.beginTransaction(SqlJetTransactionMode.WRITE);
+        try {
+          db.getOptions().setUserVersion(1);
+          } finally {
+            db.commit();
+        }
+    }
+}

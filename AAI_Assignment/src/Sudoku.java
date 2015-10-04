@@ -1,5 +1,6 @@
 import java.awt.*;        
-import java.awt.event.*;  
+import java.awt.event.*;
+import java.util.Random;
 
 import javax.swing.*;     
 import javax.swing.event.MenuEvent;
@@ -20,7 +21,7 @@ public class Sudoku extends JFrame {
  
    private JTextField[][] board = new JTextField[n][n];
 
-   private int[][] puzzle =
+   private static int[][] puzzle =
 	   	   {{0, 6, 0, 1, 0, 4, 0, 5, 0},
             {0, 0, 8, 3, 0, 5, 6, 0, 0},
             {2, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -116,7 +117,8 @@ public class Sudoku extends JFrame {
       
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
       setTitle("Sudoku");
-      
+
+
       JMenuBar menuBar = new JMenuBar();
       Font f = new Font("sans-serif", Font.PLAIN, 20);
       UIManager.put("Menu.font", f);
@@ -163,6 +165,8 @@ public class Sudoku extends JFrame {
    }
 
    public static void main(String[] args) {
+
+	   
 	   
 	   JFrame Startframe = new JFrame();
 	   Startframe.setSize(600, 400);
@@ -181,6 +185,10 @@ public class Sudoku extends JFrame {
 	   btnRandom.addActionListener(new ActionListener() {
 		
 			public void actionPerformed(ActionEvent e) {
+				Random rand = new Random();
+				int randomNum = rand.nextInt((10 -1) + 1) + 1;
+				Import_Table tbl = new Import_Table("Table"+Integer.toString(randomNum));
+				puzzle = tbl.getTable();
 				JFrame frameRandom = new Sudoku(true,Startframe);
 			    frameRandom.setSize(800, 800);
 			    Startframe.setVisible(false);
