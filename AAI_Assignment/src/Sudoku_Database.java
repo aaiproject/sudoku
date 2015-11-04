@@ -13,7 +13,7 @@ public class Sudoku_Database {
 		try{
 			//the class "org.sqlite.JDBC" is dynamically loaded at runtime
 			Class.forName("org.sqlite.JDBC");
-			connect = DriverManager.getConnection("jdbc:sqlite:src\\Database.sqlite");
+			connect = DriverManager.getConnection("jdbc:sqlite:src/Database.sqlite");
 			
 			/*String create_table = "create table \"Table1\" (\n`1` INTERGER ,\n`2` INTEGER,\n`3` INTEGER,\n`4` INTEGER)";
 			//String personTableQuery = "create table \"Person\" (\n`Person_ID` INTEGER PRIMARY KEY,\n`Person_Name` TEXT,\n`Mother_ID` INTEGER,\n`Father_ID` INTEGER,\n`Genome` TEXT,\n`Reference` TEXT\n)";
